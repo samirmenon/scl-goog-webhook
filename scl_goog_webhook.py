@@ -37,7 +37,7 @@ def scl_webhook():
 # This is just a random function to see if the service is up.
 @app.route('/webhook-info')
 def webhookTester():
-    return '<h2>SCL Google Action Responder</h2><br /> <br />Version 0.1, 2017-01 <br /> Author : Samir Menon';
+    return '<h2>SCL Google Action Responder</h2><br />Version 0.1<br />Last updated : 2017-01 <br />Author : Samir Menon';
 
 # This parses the request and adds a response.
 # Returns : A json object with the message to return to the Goog action service
