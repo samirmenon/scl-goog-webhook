@@ -20,14 +20,20 @@ import os
 # The flask framework requires this specific init to work.
 app = Flask(__name__);
 
+app_dbg = False;
+#app_dbg = True;
+
 # This is the function that we'll trigger with our natural language API.
 # This particular implementation is for Google's api.ai action framework.
 @app.route('/scl_webhook', methods=['POST'])
 def scl_webhook():
+    # We require POST messages
+    if request.method != 'POST':
+        return json.dumps({});
     # Get a hold of the Goog action POST request.
     req = request.get_json(silent=True, force=True);
     # First we parse the Goog action POST request. And get a JSON object back.
-    result_json = processRequest(req);
+    result_json = parseRequest(req);
     # Next we convert the JSON object into a proper return response
     retval = make_response(result_json);
     retval.headers['Content-Type'] = 'application/json';
@@ -42,8 +48,10 @@ def webhookTester():
 # This parses the request and adds a response.
 # Returns : A json object with the message to return to the Goog action service
 def parseRequest(req):
-    if req.get("result").get("parameters").get("primitive-type") != "move":
-        return json.dumps({});
+    params = req.get('result').get('parameters');
+    prim_type = params.get('primitive-type');
+    if prim_type != "move":
+        return json.dumps({'err':prim_type});
     # Google requires the following fields
     dd = {};
     dd['speech'] = "Robot moved";
@@ -58,5 +66,6 @@ def parseRequest(req):
 
 # This starts the app..
 if __name__ == '__main__':
+    print("Starting app...")
     port = int(os.getenv('PORT', 5000))
-    app.run(debug=False, port=port, host='0.0.0.0')
+    app.run(debug=app_dbg, port=port, host='0.0.0.0')
