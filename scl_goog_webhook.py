@@ -22,7 +22,7 @@ app = Flask(__name__);
 
 # This is the function that we'll trigger with our natural language API.
 # This particular implementation is for Google's api.ai action framework.
-@app.route('/webhook', methods=['POST'])
+@app.route('/scl_webhook', methods=['POST'])
 def scl_webhook():
     # Get a hold of the Goog action POST request.
     req = request.get_json(silent=True, force=True);
