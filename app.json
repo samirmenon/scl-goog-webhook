@@ -1,0 +1,6 @@
+{
+  "name": "SCL webhook : Responds to api.ai POST messages",
+  "description": "An interface to connect google voice services with SCL",
+  "repository": "https://github.com/samirmenon/scl-goog-webhook",
+  "keywords": ["scl", "human-robot interaction", "robot control", "robot"]
+}
