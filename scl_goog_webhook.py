@@ -35,20 +35,25 @@ def scl_webhook():
     return retval;
 
 # This is just a random function to see if the service is up.
-@app.route('/webhook-tester')
+@app.route('/webhook-info')
 def webhookTester():
-    return '<h2>SCL Google Action Responder</h2><br /> <br />Version 0.1';
+    return '<h2>SCL Google Action Responder</h2><br /> <br />Version 0.1, 2017-01 <br /> Author : Samir Menon';
 
 # This parses the request and adds a response.
+# Returns : A json object with the message to return to the Goog action service
 def parseRequest(req):
     if req.get("result").get("parameters").get("primitive-type") != "move":
         return json.dumps({});
-    dd = {};
-
     # Google requires the following fields
-
+    dd = {};
+    dd['speech'] = "Robot moved";
+    dd['displayText'] = dd['speech'];
+    # For now we won't add any data to the return response.
+    dd['data'] = {};
+    dd['contextOut'] = [];
+    dd['source'] = "SCL";
     # Now we'll convert the object into a json structure.
-    data = json.dumps({"status":"moved"});
+    data = json.dumps(dd);
     return data;
 
 # This starts the app..
