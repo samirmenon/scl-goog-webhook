@@ -35,9 +35,6 @@ There is also an option to integrate with a "webhook" (todo : more about this).
 
        ------------------------------------------------------
        
-1.c)
-
-
 ****************
 2. Webhook
 ****************
@@ -53,6 +50,10 @@ Google recommends this as a default. We'll try it out. For now, it seems to allo
 web access through a variety of different programming languages.
 
 2017/01/04 : The default integration is funky and doesn't work...
+
+So we have a basic app that processes POST requests and replies to Google. (see 2.b)
+
+FYI : It might be useful to install the heroku command line (search for it)
 
        ------------------------------------------------------
        
@@ -84,7 +85,31 @@ req = {'question':'what is the answer?'}
 req = {'result': {'parameters': {'primitive-type':"move"}}};
 rr = r.post('http://localhost:5000/scl_webhook', json=req); print rr.text 
 
-*******************
-3. Running the app
-*******************
+       ------------------------------------------------------
 
+*******************
+3. Set up redis
+*******************
+The first step is to provision a redis server on Heroku. This is free
+but requires entering a credit card.
+
+Once you've set this up (there is a very easy tutorial online), you should
+be able to look at it on the heroku command line:
+$ heroku redis -a scl-goog-webhook
+=== redis-triangular-11878 (REDIS_URL)
+Plan:               Hobby Dev
+Status:             available
+Created:            2017-01-05 02:07 UTC
+Version:            3.2.4
+Timeout:            300
+Maxmemory:          noeviction
+Maintenance:        not required
+Maintenance window: Thursdays 18:30 to 22:30 UTC
+Persistence:        None
+
+*******************
+4. Running the app
+*******************
+Make sure the webhook is live. It should be processing POST requests..
+Enable the webhook option for the intent you desire.
+Fire up the simulator and go.
