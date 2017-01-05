@@ -15,6 +15,7 @@ from flask import make_response
 # Import a few useful libraries
 import json
 import os
+import redis
 
 # Flask app should start in global layout
 # The flask framework requires this specific init to work.
@@ -51,7 +52,13 @@ def parseRequest(req):
     params = req.get('result').get('parameters');
     prim_type = params.get('primitive-type');
     if prim_type != "move":
-        return json.dumps({'err':prim_type});
+        return json.dumps({'unexpected-primitive':prim_type});
+    # Connect to the redis server and log the request (this will integrate with
+    # the scl toolchain)
+    redis_serv = params.get('redis');
+    sclRedisComm(redis_serv, params);
+    # NOTE TODO : These should be revisited later and should return appropriate
+    #             responses from the robot + some notion of robot state if required
     # Google requires the following fields
     dd = {};
     dd['speech'] = "Robot moved";
@@ -63,6 +70,13 @@ def parseRequest(req):
     # Now we'll convert the object into a json structure.
     data = json.dumps(dd);
     return data;
+
+# This runs the redis comm and integrates with the SCL api
+def sclRedisComm(redis_serv, params):
+    r = redis.from_url(redis_serv);
+    prim_type = params.get('primitive-type');
+    direction = params.get('direction');
+    r.set("scl::action", json.dumps({prim_type:direction}));
 
 # This starts the app..
 if __name__ == '__main__':
