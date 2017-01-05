@@ -72,6 +72,18 @@ MESSAGE TO GOOG:
 Goog asks for you to send a json message with the followinig format:
 https://docs.api.ai/docs/webhook#section-format-of-response-from-the-service 
 
+DEBUGGING:
+It's annoying to debug the app through the web framework (for now, say we're using heorku).
+So we have a few test things:
+2.b.i) First run the app locally using python+flask
+$ phon scl_goog_webhook.py
+2.b.ii) Run another python shell and send POST requests locally.
+$ ipython
+import requests as r
+req = {'question':'what is the answer?'}
+req = {'result': {'parameters': {'primitive-type':"move"}}};
+rr = r.post('http://localhost:5000/scl_webhook', json=req); print rr.text 
+
 *******************
 3. Running the app
 *******************
